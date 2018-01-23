@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   
+    http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- 整合spring servlet -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoader</listener-class>
+	</listener>
+
+	<!-- 配置前端控制器 -->
+  	<servlet>
+  		<servlet-name>springmvc</servlet-name>
+  		<servlet-class>
+  			org.springframework.web.servlet.DispatcherServlet
+  		</servlet-class>
+  		<!-- DispatcherServlet依赖于Spring配置文件，需要在此声明Spring的配置文件 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:applicationContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+  	</servlet>
+  	<servlet-mapping>
+  		<servlet-name>springmvc</servlet-name>
+  		<url-pattern>*.do</url-pattern>
+  	</servlet-mapping>
+
+	<!-- CXF和servlet整合 只管理路径为cxf(/cxf/*)下的内容 走一下源码就知道它会找cxf-servlet.xml文件 -->
+	<servlet>
+		<servlet-name>cxfservlet</servlet-name>
+		<servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+		<!-- 如果cxf-servlet.xml在web-inf下的话，就不用配置，但是如果在src下需要配置一下 名字为什么是config-location，看看CXFservlet源码就知道了。 -->
+		<init-param>
+			<param-name>config-location</param-name>
+			<param-value>classpath:cxf-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<!-- 访问WSDL文件的时候就需要访问这个名字，通过它可以找到web服务 -->
+		<servlet-name>cxfservlet</servlet-name>
+		<url-pattern>/cxf/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>  

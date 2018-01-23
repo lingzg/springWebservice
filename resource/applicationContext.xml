@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:jee="http://www.springframework.org/schema/jee" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+	
+	<!-- 开启IOC注解扫描 -->
+	<context:component-scan base-package="org.lingzg"/>
+	
+	<!-- 开启Spring MVC注解扫描 -->
+	<mvc:annotation-driven />
+	
+	<!-- 读取jdbc.properties -->
+	<util:properties id="jdbc" location="classpath:jdbc.properties"/>
+		
+	<!-- 声明数据源，并注入连接参数 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="#{jdbc.driver}"/>
+		<property name="url" value="#{jdbc.url}"/>
+		<property name="username" value="#{jdbc.username}"/>
+		<property name="password" value="#{jdbc.password}"/>
+	</bean>	
+	
+	<!-- 声明JdbcTemplate -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<!-- JdbcTemplate依赖于数据源 -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<!-- 配置视图组件ViewResolver -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 该组件可以自动给页面追加前缀 -->
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<!-- 该组件可以自动给页面追加后缀 -->
+		<property name="suffix" value=".jsp"/>
+	</bean>	
+	
+	<!-- 配置SimpleMappingExceptionResolver，处理Spring MVC的框架级异常。 -->
+	<!-- <bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		指定所有没有指定的异常,都跳转到该页面
+        <property name="defaultErrorView" value="error" />
+       	 跳转时携带异常对象
+        <property name="exceptionAttribute" value="ex"></property>
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.NumberFormatException">format_error</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+	<!-- 配置拦截器 -->
+	<!-- <mvc:interceptors>
+		配置第一个拦截器
+		<mvc:interceptor>
+			
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/demo/*"/>
+			声明拦截器组件
+			<bean class="com.lingzg.interceptor.FirstInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
+	
+	
+	<!-- WebService Client -->
+	<!-- <bean id="client" class="org.lingzg.webservice.IHelloWorld" factory-bean="clientFactory" factory-method="create" />  
+    <bean id="clientFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+        <property name="serviceClass" value="org.lingzg.webservice.IHelloWorld" />
+        <property name="address" value="http://localhost:8080/springWebservice/cxf/HelloWorld" />
+    </bean> -->
+	
+	
+	
+</beans>
