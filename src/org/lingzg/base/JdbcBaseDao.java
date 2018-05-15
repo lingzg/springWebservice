@@ -128,12 +128,16 @@ public abstract class JdbcBaseDao<E,PK extends Serializable> implements IBaseDao
 		return getJdbcTemplate().query(sql, new ColumnMapRowMapper(), params);
 	}
 	
-	public List<Map<String, Object>> findMapListBySql2(String sql,Object... params){
+	public List<Map<String, Object>> findMapListBySql1(String sql,Object... params){
 		return getJdbcTemplate().query(sql, new ColumnMapRowMapper(ColumnMapRowMapper.CAMEL_CASE), params);
 	}
 	
-	public List<Map<String, Object>> findMapListBySql3(String sql,Object... params){
+	public List<Map<String, Object>> findMapListBySql2(String sql,Object... params){
 		return getJdbcTemplate().query(sql, new ColumnMapRowMapper(ColumnMapRowMapper.FIRST_LOWER_CASE), params);
+	}
+	
+	public List<Map<String, Object>> findMapListBySql3(String sql,Object... params){
+		return getJdbcTemplate().query(sql, new ColumnMapRowMapper(ColumnMapRowMapper.START_WITH_LOWER_CASE), params);
 	}
 				
 	public void findPageBySql(PageInfo page, String sql, RowMapper<?> mapper, Object... params){
@@ -155,12 +159,16 @@ public abstract class JdbcBaseDao<E,PK extends Serializable> implements IBaseDao
 		findPageBySql(page, sql, new ColumnMapRowMapper(), params);
 	}
 	
-	public void findPageBySql2(PageInfo page, String sql, Object... params){
+	public void findPageBySql1(PageInfo page, String sql, Object... params){
 		findPageBySql(page, sql, new ColumnMapRowMapper(ColumnMapRowMapper.CAMEL_CASE), params);
 	}
 	
-	public void findPageBySql3(PageInfo page, String sql, Object... params){
+	public void findPageBySql2(PageInfo page, String sql, Object... params){
 		findPageBySql(page, sql, new ColumnMapRowMapper(ColumnMapRowMapper.FIRST_LOWER_CASE), params);
+	}
+	
+	public void findPageBySql3(PageInfo page, String sql, Object... params){
+		findPageBySql(page, sql, new ColumnMapRowMapper(ColumnMapRowMapper.START_WITH_LOWER_CASE), params);
 	}
 	
 	public void findPageBySql(PageInfo page, String sql, Class<?> clazz, Object... params){

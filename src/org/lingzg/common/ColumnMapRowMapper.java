@@ -15,6 +15,7 @@ public class ColumnMapRowMapper implements RowMapper<Map<String, Object>> {
 	public static final int DEFAULT_CASE = 0;
 	public static final int CAMEL_CASE = 1;
 	public static final int FIRST_LOWER_CASE = 2;
+	public static final int START_WITH_LOWER_CASE = 3;
 
 	private int columnCase;
 
@@ -49,6 +50,8 @@ public class ColumnMapRowMapper implements RowMapper<Map<String, Object>> {
 			return StringUtil.toCamelCase(columnName);
 		case FIRST_LOWER_CASE:
 			return StringUtil.toLowerCaseFirstOne(columnName);
+		case START_WITH_LOWER_CASE:
+			return StringUtil.toStartWithLowerCase(columnName);
 		default:
 			return columnName;
 		}

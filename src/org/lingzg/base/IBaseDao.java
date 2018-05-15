@@ -33,16 +33,20 @@ public interface IBaseDao<E, PK extends Serializable> {
 
 	List<Map<String, Object>> findMapListBySql(String sql, Object... params);
 
-	List<Map<String, Object>> findMapListBySql2(String sql, Object... params);
+	List<Map<String, Object>> findMapListBySql1(String sql, Object... params);
 
+	List<Map<String, Object>> findMapListBySql2(String sql, Object... params);
+	
 	List<Map<String, Object>> findMapListBySql3(String sql, Object... params);
 
 	public void findPageBySql(PageInfo page, String sql, RowMapper<?> mapper, Object... params);
 
 	void findPageBySql(PageInfo page, String sql, Object... params);
 
-	void findPageBySql2(PageInfo page, String sql, Object... params);
+	void findPageBySql1(PageInfo page, String sql, Object... params);
 
+	void findPageBySql2(PageInfo page, String sql, Object... params);
+	
 	void findPageBySql3(PageInfo page, String sql, Object... params);
 
 	void findPageBySql(PageInfo page, String sql, Class<?> clazz, Object... params);
